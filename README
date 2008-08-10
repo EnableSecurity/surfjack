@@ -1,0 +1,16 @@
+This is a demonstration tool for the Surf Jack attack. It is able to hijack the cookie for various sites (Some of which make use of HTTPS) and allows the tester to login as the victim.
+
+Requirements:
+Scapy - http://www.secdev.org/projects/scapy/
+Scapy's requirements
+Python 2.4+
+
+Features:
+	* Does Wireless injection when the nic is in monitor mode
+	* Supports Ethernet
+	* Support for WEP (when the nic is in monitor mode)
+
+Known issues:
+	* Sometimes the victim is not redirected correctly - particularly seen on Gmail.
+	* Cannot stop the tool via a simple Control^C. This is a problem with the proxy
+
