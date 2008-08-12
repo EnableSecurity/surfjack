@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # proof of concept by sandro gauci
 # enablesecurity 2008 
 # 20080809

@@ -1,5 +1,7 @@
 This is a demonstration tool for the Surf Jack attack. It is able to hijack the cookie for various sites (Some of which make use of HTTPS) and allows the tester to login as the victim.
 
+By: Sandro Gauci <sandro@enablesecurity.com>
+
 Requirements:
 Scapy - http://www.secdev.org/projects/scapy/
 Scapy's requirements
