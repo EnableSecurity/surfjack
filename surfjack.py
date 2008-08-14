@@ -21,7 +21,7 @@ import sys
 __GPL__ = """
 
    SIPvicious SIP scanner searches for SIP devices on a given network
-   Copyright (C) 2007  Sandro Gauci <sandrogauc@gmail.com>
+   Copyright (C) 2008  Sandro Gauci <sandro@enablesecurity.com>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
