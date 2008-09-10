@@ -12,7 +12,10 @@
 #       - handles WiFi connections with WEP support
 #               (needs the card to be in monitor mode + allow packet injection)
 #       - handles hosts which do not have port 80 open
-from scapy import *
+try:
+        from scapy.all import *
+except ImportError:
+        from scapy import *
 from helper import *
 from proxy import DrukqsProxy
 import logging
